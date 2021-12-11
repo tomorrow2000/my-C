@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+
+int main(int argc,char argv[])
+{
+    float a=0;
+    int b=0;
+    printf("请输入一个需要四舍五入的数:");
+    scanf("%f",&a);
+    b = a;
+    a=a-b;
+    if(a<0.5)
+    printf("%d\n",b);
+    else
+    printf("%d\n",++b);
+    return 0;
+}
