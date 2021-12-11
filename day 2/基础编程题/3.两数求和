@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+
+int main(int argc,char argv[])
+{
+    int a,b;
+    printf("请输入两个整数(例如1 2):");
+    scanf("%d %d",&a,&b);
+    printf("%d\n",a+b);
+    return 0;
+}
