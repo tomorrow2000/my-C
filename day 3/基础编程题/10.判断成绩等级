@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(int argc,char argv[])
+{
+    int score;
+    printf("请输入成绩:");
+    scanf("%d",&score);
+    if(90<=score&&score<=100)
+    printf("优秀");
+    else if(80<=score&&score<90)
+    printf("良");
+    else if(70<=score&&score<80)
+    printf("中");
+    else if(60<=score&&score<70)
+    printf("及格");
+    else if(0<=score&&score<60)
+    printf("差");
+    else
+    printf("成绩不合法");
+
+    return 0;
+}
