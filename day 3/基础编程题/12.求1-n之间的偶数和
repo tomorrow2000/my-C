@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int main(int argc,char argv[])
+{
+    int n,sum=0;
+    printf("请输入一个正整数:");
+    while(1)
+    {
+        scanf("%d",&n);
+        if(0<=n&&n<=1000)
+        break;
+        else
+        printf("输入不合法，请重新输入:");
+    }
+    while(n>1)
+    {
+        for(;n>1;n--)
+        {
+            if(n%2==0)
+            sum+=n;
+            else
+            continue;
+        }
+        break;
+    }
+    printf("sum=%d",sum);
+
+    return 0;
+}
