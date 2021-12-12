@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main(int argc,char argv[])
+{
+    int mouth;
+    printf("请输入月份:");
+    scanf("%d",&mouth);
+    if(3<=mouth&&mouth<=5)
+    printf("春季");
+    else if(6<=mouth&&mouth<=8)
+    printf("夏季");
+    else if(9<=mouth&&mouth<=11)
+    printf("秋季");
+    else if((1<=mouth&&mouth<=2)||mouth==12)
+    printf("冬季");
+    else
+    printf("不合法");
+
+    return 0;
+}
