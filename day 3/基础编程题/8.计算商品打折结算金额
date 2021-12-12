@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int main(int argc,char argv[])
+{
+    double a,b;
+    printf("请输入商品的价格为:");
+    scanf("%lf",&a);
+    int i;
+    if(100<=a&&a<500)
+    i =1;
+    else if(500<=a&&a<2000)
+    i =2;
+    else if(2000<=a&&a<5000)
+    i =3;
+    else if(5000<=a)
+    i =4;
+    switch(i)
+    {
+        case 1:
+            b=a*0.9;
+            break;
+        case 2:
+            b=a*0.8;
+            break;
+        case 3:
+            b=a*0.7;
+            break;
+        case 4:
+            b=a*0.6;
+            break;
+    }
+    if(100<=a)
+    printf("打折后的价格为:%.1lf",b);
+    else
+    printf("商品的价格为:%.1lf",a);
+
+    return 0;
+}
