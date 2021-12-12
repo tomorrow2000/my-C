@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(int argc,char argv[])
+{
+    double height,weight,BMI;
+    printf("请输入身高、体重例如(1.75 62.5):");
+    scanf("%lf %lf",&height,&weight);
+    BMI = weight/pow(height,2);
+    if(BMI<18.5)
+    printf("偏瘦");
+    else if(18.5<=BMI&&BMI<20.9)
+    printf("苗条");
+    else if(20.9<=BMI&&BMI<24.9)
+    printf("适中");
+    else if(24.9<=BMI)
+    printf("偏胖");
+
+    return 0;
+}
