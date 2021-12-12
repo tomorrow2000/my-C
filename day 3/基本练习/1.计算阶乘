@@ -1,0 +1,24 @@
+//计算阶乘
+
+#include <stdio.h>
+
+int jiecheng(int a)
+{
+    int i = 1;
+    for(;a>0;a--)
+    {
+        i*=a;
+    }
+    return i;
+}
+
+int main(int argc,char argv[])
+{
+    int a,result;
+    printf("please input one num:");
+    scanf("%d",&a);
+    result=jiecheng(a);
+    printf("%d\n",result);
+
+    return 0;
+}
