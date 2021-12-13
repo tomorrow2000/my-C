@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int strlong(char *str)
+{
+    if(*str !='\0')
+    {
+        return 1+strlong(str+1);
+    }else
+    {
+        return 0;
+    }
+}
+
+int main(int argc,char argv[])
+{
+    int count=0;
+    char str1[1024]={"asd"};
+    scanf("%[^\n]%*c",str1);
+    count=strlong(str1);
+    printf("%d",count);
+
+    return 0;
+}
