@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+void prin(int a)
+{
+    if(a>9)
+    {
+        prin(a/10);
+    }
+    printf("%d",a%10);
+}
+
+int main(int argc,char argv[])
+{
+    int input;
+    printf("请输入一个数:");
+    scanf("%d",&input);
+    prin(input);
+    return 0;
+}
