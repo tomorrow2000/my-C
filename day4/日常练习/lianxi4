@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+void game(int n,int a,int b,int c)
+{
+    if(n>0)
+    {
+        game(n-1,a,c,b);
+        printf("%d->%d\n",a,c);
+        game(n-1,b,a,c);
+        
+    }
+}
+
+int main(int argc ,char argv[])
+{
+    game(8,1,2,3);
+
+
+    return 0;
+}
