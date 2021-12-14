@@ -1,0 +1,21 @@
+//递归法
+#include <stdio.h>
+
+int frog(int n)
+{
+    if(n == 1)
+    return 1;
+    if(n == 2)
+    return 2;
+    if(n>2)
+    return frog(n-1)+frog(n-2);
+}
+
+int main(int argc,char argv[])
+{
+    int a,n;
+    scanf("%d",&n);
+    a=frog(0);
+    n=printf("%d",a);
+    return 0;
+}
