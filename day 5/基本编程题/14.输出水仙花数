@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(int argc,char argv[])
+{
+    int a=100;
+    while(a<1000)
+    {
+        if(a==pow((a/100),3)+pow((a/10)%10,3)+pow((a%10),3))
+        {
+            printf("%d\n",a);
+        }    
+        a++;
+    }
+    return 0;
+}
