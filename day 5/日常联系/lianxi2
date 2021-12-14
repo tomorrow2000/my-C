@@ -1,0 +1,31 @@
+//迭代法
+#include <stdio.h>
+
+int frog(int n)
+{
+    int a=1,b=2,c=0;
+    if(n==1)
+    {
+        return 1;
+    }
+    if(n == 2)
+    {
+        return 2;
+    }
+    for(int i=0;i<n-2;i++)
+    {
+        c=a+b;
+        a=b;
+        b=c;
+    }
+    return c;
+}
+
+int main(int argc,char argv[])
+{
+    int a,n;
+    scanf("%d",&a);
+    n=frog(a);
+    printf("%d",n);
+    return 0;
+}
