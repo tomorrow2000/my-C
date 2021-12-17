@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int check(int a)
+int swap(int a)
 {
     int x=0;
     char *p=(char *)&a;
@@ -17,6 +17,6 @@ int main()
 {
     int a=0x12345678;
     int flag=-1;
-    flag=check(a);
+    flag=swap(a);
     printf("%0x",flag);
 }
