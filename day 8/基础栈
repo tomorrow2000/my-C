@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define N 100
+int x=0;
+typedef struct STACK
+{
+    int data[N];
+    int *top;
+}Stack;
+
+Stack *Stackcreate()
+{
+    Stack *stack=(Stack *)malloc(sizeof(Stack));
+    memset(stack->data,0,sizeof(stack->data));
+    stack->top=stack->data;
+    return stack;
+}
+
+typedef struct PROCEED
+{
+    Stack *stack1;
+    Stack *stack2;
+}Proceed;
+
+void push(Stack *stack,int data)
+{
+    if(x<N)
+    {
+        *stack->top=data;
+        stack->top++;
+        x++;
+    }else
+    {
+        printf("error");
+    }
+}
+
+int pop(Stack *stack)
+{
+    int *a=stack->data+sizeof(stack->data)/sizeof(stack->data[0]);
+    if(stack->top>a)
+    {
+        printf("NULL");
+    }else
+    {
+        stack->top--;
+        printf("%d\n",*stack->top);
+        return *stack->top;
+    }
+}
+
+int main(int argc,char argv[])
+{
+    Stack *stack = Stackcreate();
+    push(stack,1);
+    push(stack,2);
+    push(stack,3);
+    push(stack,4);
+    pop(stack);
+    pop(stack);
+    pop(stack);
+
+    return 0;
+}
