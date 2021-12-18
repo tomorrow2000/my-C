@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define N 100
+int x=0;
+typedef struct STACK
+{
+    int data[N];
+    int *top;
+}Stack;
+
+Stack *Stackcreate()
+{
+    Stack *stack=(Stack *)malloc(sizeof(Stack));
+    memset(stack->data,0,sizeof(stack->data));
+    stack->top=stack->data;
+    return stack;
+}
+
+typedef struct PROCEED
+{
+    Stack *stack1;
+    Stack *stack2;
+}Proceed;
+
+void push(Stack *stack,int data)
+{
+    if(x<N)
+    {
+        *stack->top=data;
+        stack->top++;
+        x++;
+    }else
+    {
+        printf("error");
+    }
+}
+
+int pop(Stack *stack)
+{
+    int *a=stack->data+sizeof(stack->data)/sizeof(stack->data[0]);
+    if(stack->top>a)
+    {
+        printf("NULL");
+    }else
+    {
+        stack->top--;
+        printf("%d\n",*stack->top);
+        return *stack->top;
+    }
+}
+
+int popnull(Stack *stack)
+{
+    int *a=stack->data+sizeof(stack->data)/sizeof(stack->data[0]);
+    if(stack->top>a)
+    {
+        printf("NULL");
+    }else
+    {
+        stack->top--;
+        return *stack->top;
+    }
+}
+
+Proceed *Proceedcreat()
+{
+    Proceed *proceed=(Proceed *)malloc(sizeof(Proceed));
+    proceed->stack1=Stackcreate();
+    proceed->stack2=Stackcreate();
+    return proceed;
+}
+
+void inproceed(Proceed *proceed,int data)
+{
+    push(proceed->stack1,data);
+}
+
+void outproceed(Proceed *proceed)
+{
+    int a=0;
+    int count = (proceed->stack1->top-proceed->stack1->data);
+    if(proceed->stack2->top ==proceed->stack2->data)
+    {
+        for(int i=0;i<count;i++)
+        {
+            a = popnull(proceed->stack1);
+            push(proceed->stack2,a);
+        }
+    }
+    pop(proceed->stack2);
+}
+
+int main(int argc,char argv[])
+{
+    Proceed *proceed = Proceedcreat();
+    inproceed(proceed,1);
+    inproceed(proceed,2);
+    inproceed(proceed,3);
+    inproceed(proceed,4);
+    outproceed(proceed);
+    outproceed(proceed);
+    outproceed(proceed);
+    outproceed(proceed);
+    inproceed(proceed,4);
+    inproceed(proceed,3);
+    outproceed(proceed);
+    outproceed(proceed);
+
+    return 0;
+}
