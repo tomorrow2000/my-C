@@ -12,3 +12,33 @@ int main(int argc,char argv[])
     printf("%s\n",a[0]);
     return 0;
 }
+
+
+//自定义函数
+
+#include <stdio.h>
+
+void strjie(char *a,char *b)
+{
+    int i=0,j=0;
+    while(a[i]!='\0')
+    {
+        i++;
+    }
+    while(b[j]!='\0')
+    {
+        a[i]=b[j];
+        i++;
+        j++;
+    }
+}
+
+int main(int argc,char argv[])
+{
+    char a[2][1024]={"123"};
+    for(int i=0;i<2;i++)
+    scanf("%s",&a[i]);
+    strjie(a[0],a[1]);
+    printf("%s\n",a[0]);
+    return 0;
+}
