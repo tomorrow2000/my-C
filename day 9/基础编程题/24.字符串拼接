@@ -1,0 +1,14 @@
+//用系统函数
+
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc,char argv[])
+{
+    char a[2][1024]={"123"};
+    for(int i=0;i<2;i++)
+    scanf("%s",&a[i]);
+    strcat(a[0],a[1]);
+    printf("%s\n",a[0]);
+    return 0;
+}
