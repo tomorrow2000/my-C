@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+void prin(int *a,int sz)
+{
+    for(int i=0;i<sz;i++)
+    {
+        printf("%d ",*a++);
+    }
+}
+
+int main(int argc,char argv[])
+{
+    int a[]={1,2,3,4,5,6,7,8,9,10};
+    int sz=sizeof(a)/sizeof(a[0]);
+
+    prin(a,sz);
+
+
+
+    return 0;
+}
