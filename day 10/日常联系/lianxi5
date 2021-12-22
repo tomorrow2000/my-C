@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int strlon(char *string)
+{
+    int len=0;
+    while(*string++ !='\0')
+    {
+        len++;
+    }
+    return len;
+}
+
+void swap(char *a,char *b)
+{
+    char x;
+    x=*a;
+    *a=*b;
+    *b=x;
+}
+
+void reverse_string(char *string,int len)
+{
+    int left=0,right=0;
+    left=0;right=len-1;
+    swap(&string[left],&string[right]);
+    if(left<=right)
+    {
+        reverse_string(string+1,len-2);
+    }
+}
+
+int main(int argc,char argv[])
+{
+    char str[]="abcdefg";int len=0;
+    len =strlon(str);
+    reverse_string(str,len);
+    printf("%s",str);
+
+    return 0;
+}
