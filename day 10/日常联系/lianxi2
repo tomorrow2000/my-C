@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+void bit_prin(int *a)
+{
+    int j=0,o=0;
+    for(int i=30;i>=0;i-=2)
+    {
+        j=(*a>>i)&1;
+        printf("%d",j);
+    }
+    printf("\n");
+    for(int i=31;i>=0;i-=2)
+    {
+        o=(*a>>i)&1;
+        printf("%d",o);
+    }
+    printf("\n");
+}
+
+int main(int argc,char argv[])
+{
+    int a=0;
+    scanf("%d",&a);
+    bit_prin(&a);
+
+    return 0;
+}
