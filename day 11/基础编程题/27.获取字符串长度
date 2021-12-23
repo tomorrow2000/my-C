@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int strlon(char *p)
+{
+    int count = 0;
+    while(*p)
+    {
+        p++;
+        count++;
+    }
+
+    return count;
+}
+
+int main(int argc,char argv[])
+{
+    char str[1024];
+    scanf("%[^\n]%*c",str);
+    int lon=strlon(str);
+    printf("%d",lon);
+
+    return 0;
+}
