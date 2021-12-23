@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+int strlon(char *p)
+{
+    int count = 0;
+    while(*p)
+    {
+        p++;
+        count++;
+    }
+
+    return count;
+}
+
+void memcp(char *dst,char *src,int m)
+{
+    while(*src!='\0')
+    {
+        *(dst)=*(src+m-1);
+        dst++;
+        src++;
+    }
+}
+
+int main(int argc,char argv[])
+{
+    char str1[30]={0},str2[30]={0},*p=str1;
+    int m=0,len=0;
+    while(1)
+    {
+        printf("请输入一个长度为len(1<=len<30)的字符串:\n");
+        scanf("%[^\n]%*c",str1);
+        len=strlon(str1);
+        if(1<=len&&len<30)
+        {
+            break;
+        }
+    }
+    while(1)
+    {
+        printf("请输入一个正整数m(1<=m<=len):\n");
+        scanf("%d",&m);
+        if(1<=m&&m<len)
+        {
+            break;
+        }
+    }
+
+    memcp(str2,str1,m);
+    printf("%s",str2);
+
+    return 0;
+}
