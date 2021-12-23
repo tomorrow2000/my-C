@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int DigitSum(int n)
+{
+    int a=0;
+    while(n)
+    {
+        a=n%10;
+        n/=10;
+        return a+DigitSum(n);
+    }
+}
+
+int main(int argc,char argv[])
+{
+    int n;
+    scanf("%d",&n);
+    int sum=DigitSum(n);
+    printf("%d",sum);
+
+    return 0;
+}
