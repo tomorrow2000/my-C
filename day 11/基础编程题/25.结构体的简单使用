@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+typedef struct student
+{
+    char name[1024];
+    int age;
+    float height;
+}student;
+
+int main(int argc,char argv[])
+{
+    student stu;
+    scanf("%s %d %f",stu.name,&stu.age,&stu.height);
+    printf("姓名为:%s 年龄为:%d 身高为:%.1f",stu.name,stu.age,stu.height);
+
+    return 0;
+}
