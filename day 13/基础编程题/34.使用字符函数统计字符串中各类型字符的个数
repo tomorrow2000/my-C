@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc,char argv[])
+{
+    char str[100]={0},substr[100]={0};
+    int chars=0,whitespace=0,digits=0,others=0;
+    scanf("%[^\n]%*c",str);
+    char *p=str;
+    while(*p!='\0')
+    {
+        if(48<=*p&&*p<58)
+        {
+            digits++;
+        }else if((65<=*p&&*p<91)||(97<=*p&&*p<123))
+        {
+            chars++;
+        }else if(*p == ' ')
+        {
+            whitespace++;
+        }else
+        {
+            others++;
+        }
+        p++;
+    }
+    printf("chars : %d whitespace : %d digits : %d others : %d",chars,whitespace,digits,others);
+
+    return 0;
+}
