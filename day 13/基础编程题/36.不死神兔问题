@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int getSum(int n)
+{
+    if(n==1||n==2)
+    {
+        return 1;
+    }
+    if(n>2)
+    {
+        return getSum(n-1)+getSum(n-2);
+    }
+}
+
+int main(int argc,char argv[])
+{
+    int n;
+    scanf("%d",&n);
+    int ret=getSum(n);
+    printf("%d",ret);
+
+    return 0;
+}
