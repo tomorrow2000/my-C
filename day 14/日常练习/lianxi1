@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int Add(int *a,int *b)
+{
+    return (*a)+(*b);
+}
+
+int Sub(int *a,int *b)
+{
+    return (*a)-(*b);
+}
+
+int Mul(int *a,int *b)
+{
+    return (*a)*(*b);
+}
+
+int Div(int *a,int *b)
+{
+    return (*a)/(*b);
+}
+
+int main(int argc,char argv[])
+{
+    int a=0,b=0,n=0;
+    printf("*******************************\n");
+    printf("*****   1.加法   2.减法   *****\n");
+    printf("*****   3.乘法   4.除法   *****\n");
+    printf("*****   0.退出            *****\n");
+    printf("*******************************\n");
+    scanf("%d",&n);
+    scanf("%d %d",&a,&b);
+    int (*p[5])(int *,int *)={NULL,Add,Sub,Mul,Div};
+    int ret = p[n](&a,&b);
+    printf("%d",ret);
+
+    return 0;
+}
