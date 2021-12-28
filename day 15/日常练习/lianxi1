@@ -1,0 +1,68 @@
+//快速排序的应用
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+int int_cmp(const void *e1,const void *e2)
+{
+    assert(e1 !=NULL);
+    assert(e2 !=NULL);
+    //转为整数型指针解引用
+    if( *(int *)e1 > *(int *)e2)
+    {
+        return 1;
+    }else if(*(int *)e1 == *(int *)e2)
+    {
+        return 0;
+    }else
+    {
+        return -1;
+    }
+}
+
+int float_cmp(const void *e1,const void *e2)
+{
+    assert(e1 !=NULL);
+    assert(e2 !=NULL);
+    //转为浮点型指针解引用
+    if(*(float *)e1>*(float *)e2)
+    {
+        return 1;
+    }else if(*(float *)e1==*(float *)e2)
+    {
+        return 0;
+    }else
+    {
+        return -1;
+    }
+}
+
+void test_int()
+{
+    int arr[11]={2,3,5,8,4,1,6,4,2,0,1};
+    int sz=sizeof(arr)/sizeof(arr[0]);
+    int i;
+    qsort(arr,sz,sizeof(int),int_cmp);
+    for(i=0;i<sz;i++)
+    printf("%d",arr[i]);
+}
+
+void test_float()
+{
+    float arr[10]={1.0,5.0,6.5,11.3,9.8,11.5,7.2,8.0,2.0,4.4};
+    int sz=sizeof(arr)/sizeof(arr[0]);
+    int i;
+    qsort(arr,sz,sizeof(arr[0]),float_cmp);
+    for(i=0;i<sz;i++)
+    {
+        printf("%.2lf ",arr[i]);
+    }
+}
+
+int main(int argc,char argv[])
+{
+    test_float();
+
+    return 0;
+}
