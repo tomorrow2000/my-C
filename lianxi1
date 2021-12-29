@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <string.h>
+
+void swap(char *a,char *b)
+{
+    char x={0};
+    x=*a;
+    *a=*b;
+    *b=x;
+}
+
+void reverse(char *p)
+{
+    int len=strlen(p);
+    char *left=p,*right=p+len-1;
+    while(left<right)
+    {
+        swap(left,right);
+        left++;
+        right--;
+    }
+
+}
+
+int main(int argc,char argvv[])
+{
+    char str[1024]={0};
+    gets(str);
+    reverse(str);
+    printf("%s\n",str);
+
+    return 0;
+}
