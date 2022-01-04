@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <math.h>
+
+void test(int n)
+{
+    int a=1,b=0,N=n;
+    while(--N)
+    {
+        a=a*10;    //起始位置
+    }
+    b=a*10;        //末端位置
+    int i=0;
+    for(i=a;i<b;i++)
+    {
+        int tmp=i,sum=0;
+        while(tmp)
+        {
+            sum +=(int )pow(tmp%10,n);
+            tmp/=10;
+        }
+        if(i==sum)
+        {
+            printf("%d ",sum);
+        }
+    }
+}
+
+int main(int argc,char argv[])
+{
+    int n=0;
+    printf("请输入位数：");
+    scanf("%d",&n);
+    test(n);
+
+    return 0;
+}
