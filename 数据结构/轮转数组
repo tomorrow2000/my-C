@@ -1,0 +1,23 @@
+void reverse(int *nums,int n)
+{
+    int *start = nums;
+    int *end = nums+n-1;
+    while(end > start)
+    {
+        *start = *start^*end;
+        *end = *start^*end;
+        *start = *start^*end;
+        end--;
+        start++;
+    }
+}
+
+void rotate(int* nums, int numsSize, int k){
+    while(!(k<numsSize))
+    {
+        k -=numsSize;
+    }
+    reverse(nums,numsSize-k);
+    reverse(nums+numsSize-k,k);
+    reverse(nums,numsSize);
+}
