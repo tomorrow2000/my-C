@@ -1,0 +1,154 @@
+#include <stdio.h>
+
+#include <stdlib.h>
+
+typedef int SLTDateType;
+typedef struct SListNode
+{
+  SLTDateType data;
+  struct SListNode* next;
+}SListNode;
+// 动态申请一个节点
+SListNode* BuySListNode(SLTDateType x)
+{
+  SListNode *NewNode = (SListNode*)malloc(sizeof(SListNode));
+  NewNode->data = x;
+  NewNode->next = NULL;
+  return NewNode;
+}
+// 单链表打印
+void SListPrint(SListNode* plist)
+{
+  while(plist)
+  {
+    printf("%d->",plist->data);
+    plist=plist->next;
+  }
+  printf("NULL\n");
+}
+// 单链表尾插
+void SListPushBack(SListNode** pplist, SLTDateType x)
+{
+  SListNode * NewNode = BuySListNode(x);
+  if(*pplist == NULL)
+  {
+    *pplist = NewNode;
+  }else
+  {
+    SListNode *tail = *pplist;
+    while(tail->next)
+    {
+      tail = tail->next;
+    }
+    tail->next = NewNode;
+  }
+}
+// 单链表的头插
+void SListPushFront(SListNode** pplist, SLTDateType x)
+{
+  SListNode * NewNode = BuySListNode(x);
+  if(!(*pplist))
+  {
+    *pplist = NewNode;
+  }else
+  {
+    NewNode->next = *pplist;
+    *pplist = NewNode;
+  }
+}
+// 单链表的尾删
+void SListPopBack(SListNode** pplist)
+{
+  if(!(*pplist))
+  {
+    return;
+  }
+  SListNode* tail = *pplist;
+  SListNode* temp = NULL;
+  if(!(*pplist)->next)
+  {
+    *pplist = NULL;
+    free(temp);
+  }else
+  {
+    while(tail->next)
+    {
+      temp = tail;
+      tail = tail->next;
+    }
+    temp->next = NULL;
+    free(tail);
+  }
+}
+// 单链表头删
+void SListPopFront(SListNode** pplist)
+{
+  if(!(*pplist))
+  {
+    return;
+  }
+  SListNode *temp = (*pplist)->next;
+  free(*pplist);
+  *pplist = temp;
+}
+// 单链表查找
+SListNode* SListFind(SListNode* plist, SLTDateType x)
+{
+  if(!plist)
+  {
+    return NULL;
+  }
+  SListNode* temp = plist;
+  while(temp != NULL)
+  {
+    if(temp->data == x)
+    {
+      return temp;
+    }
+    temp = temp->next;
+  }
+  return NULL;
+}
+// 单链表在pos位置之前插入x
+void SListInsert(SListNode** pplist, SListNode* pos, SLTDateType x)
+{
+  SListNode * NewNode = BuySListNode(x);
+  SListNode *tail = *pplist;
+  if(*pplist == pos)
+  {
+    NewNode->next = pos;
+    *pplist = NewNode;
+    return;
+  }
+  while(tail->next)
+  {
+    if(tail->next == pos)
+    {
+      break;
+    }
+    tail = tail->next;
+  }
+  NewNode ->next = tail->next;
+  tail->next = NewNode;
+}
+// 单链表删除pos位置的值
+void SListErase(SListNode** pplist, SListNode* pos)
+{
+  SListNode *tail = *pplist;
+  if(*pplist == pos)
+  {
+    *pplist = pos->next;
+    free(pos);
+    return;
+  }
+  while(tail->next)
+  {
+    if(tail->next == pos)
+    {
+      break;
+    }
+    tail = tail->next;
+  }
+  tail->next = pos->next;
+  free(pos);
+}
