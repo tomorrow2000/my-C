@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+// 带头+双向+循环链表增删查改实现
+typedef int LTDataType;
+typedef struct ListNode
+{
+  LTDataType _data;
+  struct ListNode *_next;
+  struct ListNode *_prev;
+} ListNode;
+
+// 创建返回链表的头结点.
+ListNode *ListCreate()
+{
+  ListNode *NewNode = (ListNode *)malloc(sizeof(ListNode));
+  NewNode->_data = 0;
+  NewNode->_prev = NULL;
+  NewNode->_next = NULL;
+  return NewNode;
+}
+
+// 双向链表销毁
+void ListDestory(ListNode *pHead)
+{
+  ListNode *cur = pHead->_next;
+  while(cur != pHead)
+  {
+    ListNode *next = cur->_next;
+    free(cur);
+    cur = next;
+  }
+  free(pHead);
+  pHead = NULL;
+}
+// 双向链表打印
+void ListPrint(ListNode *pHead)
+{
+  assert(pHead);
+  ListNode *cur = pHead->_next;
+  while(cur->_next != pHead)
+  {
+    printf("%d->",cur->_data);
+    cur = cur->_next;
+  }
+  printf("%d\n",cur->_data);
+}
+// 双向链表在pos的前面进行插入
+void ListInsert(ListNode *pos, LTDataType x)
+{
+  assert(pos);
+  ListNode *NewNode = ListCreate();
+  NewNode->_data = x;
+  NewNode->_prev = pos->_prev;
+  pos->_prev->_next = NewNode;
+  NewNode->_next = pos;
+  pos->_prev = NewNode;
+}
+// 双向链表删除pos位置的节点
+void ListErase(ListNode *pos)
+{
+  pos->_next->_prev = pos->_prev;
+  pos->_prev->_next = pos->_next;
+}
+// 双向链表尾插
+void ListPushBack(ListNode *pHead, LTDataType x)
+{
+  ListInsert(pHead, x);
+}
+// 双向链表尾删
+void ListPopBack(ListNode *pHead)
+{
+  ListErase(pHead->_prev);
+}
+// 双向链表头插
+void ListPushFront(ListNode *pHead, LTDataType x)
+{
+  ListInsert(pHead->_next, x);
+}
+// 双向链表头删
+void ListPopFront(ListNode *pHead)
+{
+  ListErase(pHead->_next);
+}
+// 双向链表查找
+ListNode *ListFind(ListNode *pHead, LTDataType x)
+{
+  assert(pHead);
+  ListNode *cur = pHead->_next;
+  while(cur->_data != x)
+  {
+    cur = cur->_next;
+    return cur;
+  }
+  return NULL;
+}
