@@ -1,0 +1,32 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+ /*
+      判断是否有环使用快慢指针   当不速度相差 1时一定能追上  其他时要考虑具体情况
+      找出环入口
+      首先假设环的长度为c，进环时相差距离为x，进环前的长度为L。
+      
+      所以 快指针走的路程为 2s=nc+l+x
+      慢指针走的路程为  s=l+x
+      快指针走的路程时慢指针的两倍  所以 可得 ：l+x = nc
+      l = =nc-x = (n-1)c -x
+      可以得出相遇点与入口点的距离就是L；
+      故用两个指针分别从相遇点和入口点一次一步，最终相遇
+      新的相遇点即是入口点
+ */
+bool hasCycle(struct ListNode *head) {
+    struct ListNode *fast = NULL,*slow =NULL;
+    fast = slow = head;
+    while(fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if(fast == slow)
+            return true;
+    }
+    return false;
+}
