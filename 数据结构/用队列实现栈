@@ -1,0 +1,211 @@
+typedef int QDataType;
+// 链式结构：表示队列 
+typedef struct QListNode
+{
+  struct QListNode* _next;
+  QDataType _data;
+}QNode;
+// 队列的结构 
+typedef struct Queue
+{
+  QNode* _front;
+  QNode* _rear;
+}Queue;
+// 初始化队列 
+void QueueInit(Queue* q)
+{
+  assert(q);
+  q->_front = q->_rear = NULL;
+}
+// 队尾入队列 
+void QueuePush(Queue* q, QDataType data)
+{
+  assert(q);
+  QNode *newnode = (QNode *)malloc(sizeof(QNode));
+  newnode->_data = data,newnode->_next = NULL;
+  if(!q->_front)
+  {
+    q->_front = q->_rear = newnode;
+  }else
+  {
+    q->_rear->_next = newnode;
+    q->_rear = q->_rear->_next;
+  }
+}
+// 队头出队列 
+void QueuePop(Queue* q)
+{
+  assert(q);
+  if(!q->_front->_next)
+  {
+    free(q->_front);
+    q->_front = q->_rear = NULL;
+  }else
+  {
+    QNode *next = q->_front->_next;
+    free(q->_front);
+    q->_front = next;
+  }
+}
+// 获取队列头部元素 
+QDataType QueueFront(Queue* q)
+{
+  assert(q);
+  return q->_front->_data;
+}
+// 获取队列队尾元素 
+QDataType QueueBack(Queue* q)
+{
+  assert(q);
+  return q->_rear->_data;
+}
+// 获取队列中有效元素个数 
+int QueueSize(Queue* q)
+{
+    assert(q);
+    int count = 0;
+    if(q->_front)
+    {
+        ++count;
+    }
+    return count;
+}
+int QueueEmpty(Queue* q)
+{
+  assert(q);
+  if(q->_front)
+    return 0;
+  else
+    return 1;
+}
+// 销毁队列 
+void QueueDestroy(Queue* q)
+{
+  if(!q->_front)
+  {
+    return;
+  }
+  assert(q);
+  while(QueueEmpty(q))
+  {
+    if(!q->_front->_next)
+    {
+      free(q->_front);
+      q->_front = q->_rear = NULL;
+    }else
+    {
+      QNode *next = q->_front->_next;
+      free(q->_front);
+      q->_front = next;
+    }
+  }
+}
+typedef struct {
+    Queue queue1;
+    Queue queue2;
+} MyStack;
+
+
+MyStack* myStackCreate() {
+    MyStack* mystack = (MyStack *)malloc(sizeof(MyStack));
+    QueueInit(&mystack->queue1);
+    QueueInit(&mystack->queue2);
+    return mystack;
+}
+
+void myStackPush(MyStack* obj, int x) {
+    Queue * queue = NULL;
+    Queue * emptyqueue = NULL;
+    if(QueueEmpty(&obj->queue1))
+    {
+        emptyqueue = &obj->queue1;
+        queue = &obj->queue2;
+    }else
+    {
+        emptyqueue = &obj->queue2;
+        queue = &obj->queue1;
+    }
+    QueuePush(queue,x);
+}
+
+int myStackPop(MyStack* obj) {
+    int data = 0;
+    Queue * queue = NULL;
+    Queue * emptyqueue = NULL;
+    if(QueueEmpty(&obj->queue1))
+    {
+        emptyqueue = &obj->queue1;
+        queue = &obj->queue2;
+    }else
+    {
+        emptyqueue = &obj->queue2;
+        queue = &obj->queue1;
+    }
+    while(queue->_front->_next)
+    {
+        QueuePush(emptyqueue,QueueFront(queue));
+        QueuePop(queue);
+    }
+    data = QueueFront(queue);
+    QueuePop(queue);
+    return data;
+}
+
+int myStackTop(MyStack* obj) {
+    int data = 0;
+    Queue * queue = NULL;
+    Queue * emptyqueue = NULL;
+    if(QueueEmpty(&obj->queue1))
+    {
+        emptyqueue = &obj->queue1;
+        queue = &obj->queue2;
+    }else
+    {
+        emptyqueue = &obj->queue2;
+        queue = &obj->queue1;
+    }
+    while(queue->_front->_next)
+    {
+        QueuePush(emptyqueue,QueueFront(queue));
+        QueuePop(queue);
+    }
+    data = QueueFront(queue);
+    QueuePush(emptyqueue,QueueFront(queue));
+    QueuePop(queue);
+    return data;
+}
+
+bool myStackEmpty(MyStack* obj) {
+    Queue * queue = NULL;
+    Queue * emptyqueue = NULL;
+    if(QueueEmpty(&obj->queue1))
+    {
+        emptyqueue = &obj->queue1;
+        queue = &obj->queue2;
+    }else
+    {
+        emptyqueue = &obj->queue2;
+        queue = &obj->queue1;
+    }
+    if(!QueueEmpty(queue))
+        return 0;
+    else
+        return 1;
+}
+
+void myStackFree(MyStack* obj) {
+    Queue * queue = NULL;
+    Queue * emptyqueue = NULL;
+    if(QueueEmpty(&obj->queue1))
+    {
+        emptyqueue = &obj->queue1;
+        queue = &obj->queue2;
+    }else
+    {
+        emptyqueue = &obj->queue2;
+        queue = &obj->queue1;
+    }
+    QueueDestroy(queue);
+    free(obj);
+    obj = NULL;
+}
