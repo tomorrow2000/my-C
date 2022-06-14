@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef char TreeType;
+typedef struct TreeNode
+{
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeType data;
+}TreeNode;
+
+TreeNode *TreeCreate(char *a,int *pi)
+{
+    if(a[*pi] == '#')
+    {
+        ++(*pi);
+        return NULL;
+    }
+    TreeNode *root = (TreeNode *)malloc(sizeof(TreeNode));
+    root->data = a[*pi];
+    ++(*pi);
+    root->left = TreeCreate(a,pi);
+    root->right = TreeCreate(a,pi);
+    return root;
+}
+
+void InOrder(TreeNode* root)
+{
+    if(!root)
+        return;
+    InOrder(root->left);
+    printf("%c ",root->data);
+    InOrder(root->right);
+}
+
+int main()
+{
+    char a[100]={0};
+    scanf("%s",a);
+    int i = 0;
+    TreeNode* tree = TreeCreate(a,&i);
+    InOrder(tree);
+    return 0;
+}
