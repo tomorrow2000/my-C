@@ -1,0 +1,25 @@
+// 希尔排序
+void ShellSort(int* a, int n)
+{
+    int i = 0,end = 0,gap = n,val = 0;
+    if(!a&&(n == 0||n == 1))
+        return;
+    while(gap = gap/2)
+    {
+        for(i=gap;i<n;i++)
+        {
+            end = i,val = a[i];
+            while(end>=gap&&a[end-gap]>val)
+            {
+                a[end] = a[end-gap];
+                end-=gap;
+            }
+            a[end] = val;
+        }
+    }
+}
+int main()
+{
+    int a[12] = {1,9,6,5,3,7,5,4,2,8,0,5};
+    ShellSort(a, 12);
+    return 0;
