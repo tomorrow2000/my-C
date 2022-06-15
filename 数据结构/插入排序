@@ -1,0 +1,22 @@
+void InsertSort(int* a, int n)
+{
+    int i = 0,end = 0,val = 0;
+    if(n == 0 || n == 1)
+        return;
+    for(i = 0;i<n;i++)
+    {
+        end = i,val = a[i];
+        while(end>0&&a[end-1]>val)
+        {
+            a[end] = a[end-1];
+            --end;
+        }
+        a[end] = val;
+    }
+}
+int main()
+{
+    int a[12] = {1,9,6,5,3,7,5,4,2,8,0,5};
+    InsertSort(a, 12);
+    return 0;
+}
