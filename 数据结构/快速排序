@@ -1,0 +1,240 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+// 支持动态增长的栈
+typedef int STDataType;
+typedef struct Stack
+{
+  STDataType* _a;
+  int _top;   // 栈顶
+  int _capacity; // 容量 
+}Stack;
+// 初始化栈 
+void StackInit(Stack* ps)
+{
+  ps->_top = -1;
+  ps->_capacity = 4;
+  ps->_a = (STDataType *)malloc(ps->_capacity*sizeof(STDataType));
+}
+// 入栈 
+void StackPush(Stack* ps, STDataType data)
+{
+  assert(ps);
+  if(ps->_top+1 == ps->_capacity)
+  {
+    STDataType *temp = (STDataType *)realloc(ps->_a,ps->_capacity*2*sizeof(STDataType));
+    if(!temp)
+    {
+      printf("realloc fail");
+      exit(-1);
+    }
+    ps->_capacity*=2;
+    ps->_a=temp;
+  }
+  ++ps->_top;
+  ps->_a[ps->_top] = data;
+}
+// 出栈 
+void StackPop(Stack* ps)
+{
+  assert(ps);
+  if(ps->_top == -1)
+  {
+    printf("pop fail");
+    exit(-1);
+  }
+  --ps->_top;
+}
+// 获取栈顶元素 
+STDataType StackTop(Stack* ps)
+{
+  assert(ps);
+  if(ps->_top == -1)
+  {
+    printf("pop fail");
+    exit(-1);
+  }
+  return ps->_a[ps->_top];
+}
+// 获取栈中有效元素个数 
+int StackSize(Stack* ps)
+{
+  assert(ps);
+  return ps->_top+1;
+}
+// 检测栈是否为空，如果为空返回非零结果，如果不为空返回0 
+int StackEmpty(Stack* ps)
+{
+  assert(ps);
+  if(ps->_top != -1)
+    return 0;
+  else
+    return 1;
+}
+// 销毁栈 
+void StackDestroy(Stack* ps)
+{
+  assert(ps);
+  free(ps->_a);
+  ps->_a = NULL;
+}
+void swap(int *a,int *b)
+{
+    if(*a == *b)
+        return;
+    *a = *a^*b;
+    *b = *a^*b;
+    *a = *a^*b;
+}
+
+int GetMidIndex(int *a,int left,int right)
+{
+    int mid = (left+right)/2;
+    if(a[left]< a[mid])
+    {
+        if(a[mid]<a[right])
+            return mid;
+        else if(a[left]>a[right])
+            return left;
+        else 
+            return right;
+    }else
+    {
+        if(a[mid]>a[right])
+            return mid;
+        else if(a[left]<a[right])
+            return left;
+        else 
+            return right;
+    }
+}
+//挖坑法
+void partsort1(int *a,int left,int right)
+{
+    if(left>=right)
+        return;
+    int mid = GetMidIndex(a,left,right);
+    swap(&a[left],&a[mid]);
+    int start = left,end = right;
+    int key = a[left],pit = left;
+    while(start<end)
+    {
+        while(start<end && a[end]>=key)
+            --end;
+        a[pit] = a[end];
+        pit = end;
+        while(start<end && a[start]<=key)
+            ++start;
+        a[pit] = a[start];
+        pit = start;
+    }
+    a[pit] = key;
+
+    partsort1(a,left,pit-1);
+    partsort1(a,pit+1,right);
+}
+//双指针法
+void partsort2(int *a,int left,int right)
+{
+    if(left>=right)
+        return;
+    int mid = GetMidIndex(a,left,right);
+    swap(&a[left],&a[mid]);
+    int start = left,end = right;
+    int key = a[left];
+    while(start<end)
+    {
+        while(start<end && a[end]>=key)
+            --end;
+        while(start<end && a[start]<=key)
+            ++start;
+        swap(&a[start],&a[end]);
+    }
+    swap(&a[left],&a[end]);
+
+
+    partsort2(a,left,end-1);
+    partsort2(a,end+1,right);
+}
+//前后指针法
+void partsort3(int *a,int left,int right)
+{
+    if(left>=right)
+        return;
+    int mid = GetMidIndex(a,left,right);
+    swap(&a[left],&a[mid]);
+    int prev = left,cur = left;
+    int key = a[left];
+    while(cur<right)
+    {
+        ++cur;
+        if(a[cur]<key)
+        {
+            ++prev;
+            swap(&a[prev],&a[cur]);
+        }
+    }
+    swap(&a[left],&a[prev]);
+
+    partsort3(a,left,prev-1);
+    partsort3(a,prev+1,right);
+}
+
+int partsort4(int *a,int left,int right)
+{
+    int mid = GetMidIndex(a,left,right);
+    swap(&a[left],&a[mid]);
+    int start = left,end = right;
+    int key = a[left],pit = left;
+    while(start<end)
+    {
+        while(start<end && a[end]>=key)
+            --end;
+        a[pit] = a[end];
+        pit = end;
+        while(start<end && a[start]<=key)
+            ++start;
+        a[pit] = a[start];
+        pit = start;
+    }
+    a[pit] = key;
+    return pit;
+}
+
+void QuickSort(int *a,int n)
+{
+    if(!a&&(n == 0||n == 1))
+        return;
+    int left = 0,right = n-1,key = 0;;
+    Stack ps;
+    StackInit(&ps);
+    StackPush(&ps,right);
+    StackPush(&ps,left);
+    while(!StackEmpty(&ps))
+    {
+        left = StackTop(&ps);
+        StackPop(&ps);
+        right = StackTop(&ps);
+        StackPop(&ps);
+        key = partsort4(a,left,right);
+        if(key+1<right)
+        {
+            StackPush(&ps,right);
+            StackPush(&ps,key+1);
+        }
+        if(left<key-1)
+        {
+            StackPush(&ps,key-1); 
+            StackPush(&ps,left);
+        }
+    }
+    StackDestroy(&ps);
+}
+
+int main()
+{
+    int a[12] = {1,9,6,5,3,7,5,4,2,8,0,5};
+    QuickSort(a,12);
+    return 0;
+}
