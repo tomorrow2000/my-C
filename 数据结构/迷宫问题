@@ -1,0 +1,913 @@
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <stdbool.h>
+
+#include <assert.h>
+
+
+
+typedef struct Stack
+
+{
+
+  int top;
+
+  int capacity;
+
+  int *data;
+
+}Stack;
+
+
+
+void stackinit(Stack *stack)
+
+{
+
+  assert(stack);
+
+  stack->top = 0,stack->capacity = 2;
+
+  stack->data = (int *)malloc(stack->capacity*sizeof(int));
+
+}
+
+void stackdestroy(Stack *stack)
+
+{
+
+  assert(stack);
+
+  free(stack->data);
+
+  stack->data = NULL;
+
+}
+
+void stackpush(Stack *stack,int data)
+
+{
+
+  assert(stack);
+
+  if(stack->top>=stack->capacity)
+
+  {
+
+    int *temp = (int *)realloc(stack->data,2*stack->capacity*sizeof(int));
+
+    if(temp)
+
+    {
+
+      //printf("succeed\n");
+
+      stack->data = temp;
+
+      stack->capacity *= 2;
+
+    }else
+
+    {
+
+      printf("fail");
+
+    }
+
+  }
+
+  stack->top++;
+
+  stack->data[stack->top-1] = data;
+
+}
+
+void stackpop(Stack *stack)
+
+{
+
+  assert(stack);
+
+  if(stack->top!=0)
+
+  {
+
+    --stack->top;
+
+  }else
+
+  {
+
+    printf("fail");
+
+  }
+
+}
+
+int stacktop(Stack *stack)
+
+{
+
+  assert(stack);
+
+  if(stack->top!=0)
+
+    return stack->data[stack->top-1];
+
+  else
+
+    exit(-1);
+
+}
+
+bool stackempty(Stack *stack)
+
+{
+
+  assert(stack);
+
+  if(stack->top)
+
+    return 0;
+
+  else
+
+    return 1;
+
+}
+
+
+
+void mazeinit(int **maze,int row,int col)
+
+{
+
+  int i = 0,j = 0;
+
+  for(i = 0;i<row;i++)
+
+  {
+
+    for(j = 0;j<col;j++)
+
+    {
+
+      scanf("%d",&maze[i][j]);
+
+    }
+
+  }
+
+}
+
+
+
+void mazeprintf(int **maze,int row,int col)
+
+{
+
+  int i = 0,j = 0;
+
+  for(i = 0;i<row;i++)
+
+  {
+
+    for(j = 0;j<col;j++)
+
+    {
+
+      printf("%d ",maze[i][j]);
+
+    }
+
+    printf("\r\n");
+
+  }
+
+}
+
+
+
+void pathprintf(Stack *stack)
+
+{
+
+  if(!stack)
+
+    return;
+
+  int row = 0,col = 0;
+
+  while(!stackempty(stack))
+
+  {
+
+    row = stacktop(stack);
+
+    stackpop(stack);
+
+    col = stacktop(stack);
+
+    stackpop(stack);
+
+    printf("(%d,%d)\r\n",row,col);
+
+  }
+
+}
+
+
+
+bool mazepath(int **maze,int row,int col,int N,int M,Stack *stack)
+
+{
+
+  maze[row][col]=2;
+
+  if(row == N-1 &&col == M-1)
+
+  {
+
+    stackpush(stack,col);
+
+    stackpush(stack,row);
+
+    return true;
+
+  }
+
+//向下走
+
+  if(row+1<N)
+
+  {
+
+    if(!maze[row+1][col])
+
+    {
+
+      if(mazepath(maze, row+1,col,N,M,stack))
+
+      {
+
+        stackpush(stack,col);
+
+        stackpush(stack,row);
+
+        return true;
+
+      }
+
+    }
+
+  }
+
+//向右走
+
+  if(col+1<M)
+
+  {
+
+    if(!maze[row][col+1])
+
+    {
+
+      if(mazepath(maze, row,col+1,N,M,stack))
+
+      {
+
+        stackpush(stack,col);
+
+        stackpush(stack,row);
+
+        return true;
+
+      }
+
+    }
+
+  }
+
+//向左走
+
+  if(col-1>=0)
+
+  {
+
+    if(!maze[row][col-1])
+
+    {
+
+      if(mazepath(maze, row,col-1,N,M,stack))
+
+      {
+
+        stackpush(stack,col);
+
+        stackpush(stack,row);
+
+        return true;
+
+      }
+
+    }
+
+  }
+
+//向上走
+
+  if(row-1>=0)
+
+  {
+
+    
+
+    if(!maze[row-1][col])
+
+    {
+
+      if(mazepath(maze, row-1,col,N,M,stack))
+
+      {
+
+        stackpush(stack,col);
+
+        stackpush(stack,row);
+
+        return true;
+
+      }
+
+    }
+
+  }
+
+  return false;
+
+}
+
+
+
+
+
+void mazedestroy(int **maze,int row,int col)
+
+{
+
+  int i = 0;
+
+  for(i = 0;i<row;i++)
+
+  {
+
+    free(maze[i]);
+
+    maze[i]=NULL;
+
+  }
+
+}
+
+
+
+int main()
+
+{
+
+  int N = 0 ,M = 0,i = 0;
+
+  Stack stack;
+
+  stackinit(&stack);
+
+  //printf("please intput N M maze:\n");
+
+  scanf("%d",&N);
+
+  scanf("%d",&M);
+
+  int **maze = (int **)malloc(N*sizeof(int *));
+
+  for(i = 0;i<N;i++)
+
+  {
+
+    maze[i] = (int *)malloc(M*sizeof(int));
+
+  }
+
+  mazeinit(maze,N,M);
+
+  //mazeprintf(maze,N,M);
+
+  mazepath(maze,0,0,N,M,&stack);
+
+  pathprintf(&stack);
+
+  mazedestroy(maze,N,M);
+
+  stackdestroy(&stack);
+
+  free(maze);
+
+  maze = NULL;
+
+  return 0;
+
+}
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <stdbool.h>
+
+#include <assert.h>
+
+
+
+typedef struct Stack
+
+{
+
+  int top;
+
+  int capacity;
+
+  int *data;
+
+}Stack;
+
+
+
+Stack pathmin;
+
+
+
+void stackinit(Stack *stack)
+
+{
+
+  assert(stack);
+
+  stack->top = 0,stack->capacity = 2;
+
+  stack->data = (int *)malloc(stack->capacity*sizeof(int));
+
+}
+
+void stackdestroy(Stack *stack)
+
+{
+
+  assert(stack);
+
+  free(stack->data);
+
+  stack->data = NULL;
+
+}
+
+void stackpush(Stack *stack,int data)
+
+{
+
+  assert(stack);
+
+  if(stack->top>=stack->capacity)
+
+  {
+
+    int *temp = (int *)realloc(stack->data,2*stack->capacity*sizeof(int));
+
+    if(temp)
+
+    {
+
+      //printf("succeed\n");
+
+      stack->data = temp;
+
+      stack->capacity *= 2;
+
+    }else
+
+    {
+
+      printf("fail");
+
+    }
+
+  }
+
+  stack->top++;
+
+  stack->data[stack->top-1] = data;
+
+}
+
+void stackpop(Stack *stack)
+
+{
+
+  assert(stack);
+
+  if(stack->top!=0)
+
+  {
+
+    --stack->top;
+
+  }else
+
+  {
+
+    printf("fail");
+
+  }
+
+}
+
+int stacktop(Stack *stack)
+
+{
+
+  assert(stack);
+
+  if(stack->top!=0)
+
+    return stack->data[stack->top-1];
+
+  else
+
+    exit(-1);
+
+}
+
+bool stackempty(Stack *stack)
+
+{
+
+  assert(stack);
+
+  if(stack->top)
+
+    return 0;
+
+  else
+
+    return 1;
+
+}
+
+
+
+void mazeinit(int **maze,int row,int col)
+
+{
+
+  int i = 0,j = 0;
+
+  for(i = 0;i<row;i++)
+
+  {
+
+    for(j = 0;j<col;j++)
+
+    {
+
+      scanf("%d",&maze[i][j]);
+
+    }
+
+  }
+
+}
+
+
+
+void mazeprintf(int **maze,int row,int col)
+
+{
+
+  int i = 0,j = 0;
+
+  for(i = 0;i<row;i++)
+
+  {
+
+    for(j = 0;j<col;j++)
+
+    {
+
+      printf("%d ",maze[i][j]);
+
+    }
+
+    printf("\r\n");
+
+  }
+
+}
+
+
+
+void pathprintf(Stack *stack)
+
+{
+
+  if(!stack)
+
+    return;
+
+  int row = 0,col = 0;
+
+  Stack temp;
+
+  stackinit(&temp);
+
+  while(!stackempty(stack))
+
+  {
+
+    stackpush(&temp,stacktop(stack));
+
+    stackpop(stack);
+
+  }
+
+  while(!stackempty(&temp))
+
+  {
+
+    col = stacktop(&temp);
+
+    stackpop(&temp);
+
+    row = stacktop(&temp);
+
+    stackpop(&temp);
+
+    if(!stackempty(&temp))
+
+      printf("[%d,%d],",row,col);
+
+    else
+
+      printf("[%d,%d]",row,col);
+
+  }
+
+    printf("\r\n");
+
+}
+
+
+
+void mazepathmin(Stack *stack)
+
+{
+
+  if(!pathmin.top)
+
+  {
+
+    int *temp = realloc(pathmin.data,stack->capacity*sizeof(int));
+
+    if(temp)
+
+    {
+
+      pathmin.data = temp;
+
+    }
+
+    memcpy(pathmin.data,stack->data,stack->capacity*sizeof(int));
+
+    pathmin.capacity = stack->capacity;
+
+    pathmin.top = stack->top;
+
+  }
+
+  else if(pathmin.top>stack->top)
+
+  {
+
+    memcpy(pathmin.data,stack->data,stack->capacity*sizeof(int));
+
+    pathmin.capacity = stack->capacity;
+
+    pathmin.top = stack->top;
+
+  }
+
+}
+
+
+
+bool mazepath(int **maze,int row,int col,int N,int M,int P,Stack *stack)
+
+{
+
+  maze[row][col]=2;
+
+  stackpush(stack,col);
+
+  stackpush(stack,row);
+
+  if(row == 0 && col == M-1)
+
+  {
+
+    if(P<0)
+
+    {
+
+      maze[row][col]=1;
+
+      stackpop(stack);
+
+      stackpop(stack);
+
+      pathmin.top = 0;
+
+      return false;
+
+    }
+
+    mazepathmin(stack);
+
+    maze[row][col]=1;
+
+    stackpop(stack);
+
+    stackpop(stack);
+
+    return true;
+
+  }
+
+//向下走
+
+  if(row+1<N)
+
+  {
+
+    if(maze[row+1][col] == 1)
+
+      mazepath(maze, row+1,col,N,M,P,stack);
+
+  }
+
+//向右走
+
+  if(col+1<M)
+
+  {
+
+    if(maze[row][col+1] == 1)
+
+    {
+
+      --P;
+
+      mazepath(maze, row,col+1,N,M,P,stack);
+
+    }
+
+  }
+
+//向左走
+
+  if(col-1>=0)
+
+  {
+
+    if(maze[row][col-1] == 1)
+
+    {
+
+      --P;
+
+      mazepath(maze, row,col-1,N,M,P,stack);
+
+    }
+
+  }
+
+//向上走
+
+  if(row-1>=0)
+
+  {
+
+    
+
+    if(maze[row-1][col] == 1)
+
+    {
+
+      P-=3;
+
+      mazepath(maze, row-1,col,N,M,P,stack);
+
+    }
+
+  }
+
+  stackpop(stack);
+
+  stackpop(stack);
+
+  maze[row][col]=1;
+
+  return false;
+
+}
+
+
+
+
+
+void mazedestroy(int **maze,int row,int col)
+
+{
+
+  int i = 0;
+
+  for(i = 0;i<row;i++)
+
+  {
+
+    free(maze[i]);
+
+    maze[i]=NULL;
+
+  }
+
+}
+
+
+
+int main()
+
+{
+
+  int N = 0 ,M = 0,P=0,i = 0;
+
+  Stack stack;
+
+  stackinit(&stack);
+
+  stackinit(&pathmin);
+
+  //printf("please intput N M maze:\n");
+
+  scanf("%d",&N);
+
+  scanf("%d",&M);
+
+  scanf("%d",&P);
+
+  int **maze = (int **)malloc(N*sizeof(int *));
+
+  for(i = 0;i<N;i++)
+
+  {
+
+    maze[i] = (int *)malloc(M*sizeof(int));
+
+  }
+
+  mazeinit(maze,N,M);
+
+  //mazeprintf(maze,N,M);
+
+  mazepath(maze,0,0,N,M,P,&stack);
+
+  if(stackempty(&pathmin))
+
+    printf("Can not escape!");
+
+  else
+
+    pathprintf(&pathmin);
+
+  mazedestroy(maze,N,M);
+
+  stackdestroy(&stack);
+
+  stackdestroy(&pathmin);
+
+  free(maze);
+
+  maze = NULL;
+
+  return 0;
+
+}
