@@ -1,0 +1,77 @@
+void swap(int *a,int *b)
+{
+    if(!a || !b || *a == *b)
+        return;
+    *a = *a^*b;
+    *b = *a^*b;
+    *a = *a^*b;
+}
+
+int GetMidIndex(int *a,int left,int right)
+{
+    int mid = (left+right)/2;
+    if(a[left]< a[mid])
+    {
+        if(a[mid]<a[right])
+            return mid;
+        else if(a[left]>a[right])
+            return left;
+        else 
+            return right;
+    }else
+    {
+        if(a[mid]>a[right])
+            return mid;
+        else if(a[left]<a[right])
+            return left;
+        else 
+            return right;
+    }
+}
+
+void partsort(int *a,int left,int right)
+{
+    if(left>=right)
+        return;
+    int mid = GetMidIndex(a,left,right);
+    swap(&a[left],&a[mid]);
+    int start = left,end = right;
+    int key = a[left],pit = left;
+    while(start<end)
+    {
+        while(start<end && a[end]>=key)
+            --end;
+        a[pit] = a[end];
+        pit = end;
+        while(start<end && a[start]<=key)
+            ++start;
+        a[pit] = a[start];
+        pit = start;
+    }
+    a[pit] = key;
+
+    partsort(a,left,pit-1);
+    partsort(a,pit+1,right);
+}
+void QuickSort(int *a,int n)
+{
+    if(!a&&(n == 0||n == 1))
+        return;
+    partsort(a,0,n-1);
+}
+
+int minPairSum(int* nums, int numsSize){
+    QuickSort(nums,numsSize);
+    int start = 0,end = numsSize-1,max = 0;
+    while(start<end)
+    {
+        int temp = 0;
+        temp = nums[start]+nums[end];
+        if(temp>max)
+        {
+            max = temp;
+        }
+        start++,end--;
+    }
+    return max;
+}
