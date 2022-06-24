@@ -1,0 +1,131 @@
+Linux: 一切皆文件
+
+Linux文件系统：
+Bin：二进制可执行文件
+Dev：设备文件（块设备文件、字符设备文件）
+Boot：系统启动文件
+Root：管理员文件
+Home：用户信息文件
+Lib：库文件
+Etc：用户配置文件
+Usr：用户第三方软件文件
+
+Linux文件类型（7/8种）
+-   普通文件
+L   软连接文件
+D   目录文件
+B   块设备文件
+C   字符设备文件
+P   管道文件
+A   套接字文件
+其他文件   未知文件
+
+软连接：ln -s file file.s
+相当于Windows的快捷方式
+注意：为了保证软连接可以在所有路径都能生效，创建时要使用绝对路径
+
+硬链接：ln file file.hard
+操作系统给每个文件一个唯一的inode，当inode存在时，所有inode的硬连接都是同步的。当删除硬链接是，文件的硬连接数减一，当硬连接数减为0时才把文件进行释放。
+
+更改用户权限
+Chmod 
+文字设定 chmod u/g/o/a+/-/=/w/r/x 文件名
+(user/group/other/all)(write/read/execute)
+chmod a-wrx a.c
+数字设定法 chmod 777 文件名
+777分别表示user/group/other
+
+创建用户
+Sudo adduser name
+修改文件所属用户
+Sudo chown 新用户名 文件
+Chown还可以同时修改文件所属用户和所属组
+  Sudo chown 新用户名：组 文件
+删除用户
+Sudo deluser 用户名
+创建组群
+Sudo addgroup name
+修改文件所属组
+Sudo chgrp 新用户名 文件
+删除组群
+Sudo delgroup 组名
+
+Find命令
+找文件
+参数：
+-maxdepth 递归深度
+
+-type 按文件类型查找 d/p/b/c/a/l
+find ./ -maxdepth 1 -type l
+-name 按文件名查找 
+find ./ -maxdepth 1 -name “a*”
+-size 按文件大小查找
+find ./ -maxdepth 1 -size +3k/M/G -size -6k/M/G
+表示查找大于3k小于6k的文件 +3k表示大于3k
+注意：文件大小区分大小写，k需要小写，M/G需要大写
+-atime/-mtime/-ctime按最近访问/更改(指更改模式)/改动时间查找。
+
+-exec：将查询到的结果集执行某个指令
+	find /usr/ -name '*tmp*' -exec ls -ld {} \;
+{}相当于前面查找出来的结果，\;是转义字符；。
+-ok：与-exec功能相同相当于是交互性的exec
+
+(交互式)
+-xargs：将find搜索的结果集执行某一指定命令。当结果集数量过大时，可以分片映射。(效率更高)
+find ./ -maxdepth 1 -size -1k | xargs ls -l
+-print0：xargs默认以” ”为分隔符，print0可以设置分隔符为null。
+find ./ -maxdepth 1 -size -1k print0 | xargs -print0 ls -l
+
+Ls -al对应信息
+
+Grep命令：查找文件内容
+Grep -r “chenzhiyuan” ./ -n
+-n显示行号
+Ps -aux | grep “chenzhiyuan”
+a:all u:user x:不交互的
+
+软件安装
+在线安装：
+1.联网
+2.更新软件资源列表到本地
+Sudo apt-get update
+3.安装软件
+Sudo apt-get install vim
+4.卸载软件
+Sudo apt-get remove vim
+离线安装：
+下载.deb文件到linux系统中
+安装Sudo dpkg -i 文件名.deb
+卸载sudo dpkg - r 文件名.deb
+
+压缩：
+Tar：将文件进行打包
+
+1：
+Tar -zcvf 压缩包名 压缩文件
+z:gzip压缩包
+Tar -zxvf 压缩包名 压缩文件
+z:gzip压缩包
+
+2：
+Tar -jcvf 压缩包名 压缩文件
+j:bzip2压缩包
+Tar -jxvf 压缩包名 压缩文件
+j:bzip2压缩包
+解压：
+c：creace   v：显示压缩过程   f：file
+x：解压
+命名.tar.gz
+
+
+3:
+rar压缩
+Rar a -r 压缩名 压缩文件
+Rar x 压缩名
+A:all x:解压 -r：递归
+命名.rar
+4:
+zip压缩
+Zip -r 压缩名 压缩文件
+unzip 压缩名
+命名.zip
